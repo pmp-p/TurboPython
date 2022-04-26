@@ -12,6 +12,9 @@
 #include "styles.h"
 #include <fmt/core.h>
 #include <iostream>
+
+
+
 using std::ios;
 
 TFrame *EditorWindow::initFrame(TRect bounds)
@@ -71,6 +74,7 @@ EditorWindow::EditorWindow( const TRect &bounds, std::string_view aFile,
     enabledCmds += cmSearchPrev;
     enabledCmds += cmToggleIndent;
     enabledCmds += cmCloseEditor;
+    enabledCmds += cmRun;
 
     // Commands that always get disabled when unfocusing the editor.
     disabledCmds += enabledCmds;
@@ -215,6 +219,9 @@ void EditorWindow::handleEvent(TEvent &ev) {
     if (ev.what == evCommand) {
         bool handled = true;
         switch (ev.message.command) {
+            case cmRun:
+                TurboApp::app->doVM(1);
+                break;
             case cmSave:
                 trySaveFile();
                 break;

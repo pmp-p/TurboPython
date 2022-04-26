@@ -28,7 +28,8 @@ const ushort
     cmTreeNext      = 107,
     cmTreePrev      = 108,
     cmCloseEditor   = 109,
-    cmRename        = 110;
+    cmRename        = 110,
+    cmRun           = 200;
 
 // Commands that cannot be deactivated.
 const ushort
@@ -57,6 +58,8 @@ struct TurboApp : public TApplication {
     void getEvent(TEvent &event) override;
     void handleEvent(TEvent& event) override;
     void parseArgs();
+
+    void doVM(int act);
 
     void fileNew();
     void fileOpen();

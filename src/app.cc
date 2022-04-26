@@ -61,6 +61,7 @@ TurboApp::TurboApp(int argc, const char *argv[]) :
     ts += cmSearchPrev;
     ts += cmToggleIndent;
     ts += cmCloseEditor;
+    ts += cmRun;
     disableCommands(ts);
 
     // Actions that only make sense when there is at least one editor.
@@ -125,8 +126,10 @@ TMenuBar *TurboApp::initMenuBar(TRect r)
             *new TMenuItem( "~R~eplace...",cmReplace, kbCtrlR, hcNoContext, "Ctrl-R" ) +
             *new TMenuItem( "Find ~N~ext", cmSearchAgain, kbF3, hcNoContext, "F3" ) +
             *new TMenuItem( "Find ~P~revious", cmSearchPrev, kbShiftF3, hcNoContext, "Shift-F3" ) +
+        *new TSubMenu( "~V~M", kbAltV ) +
+            *new TMenuItem( "~R~un", cmRun, kbF5, hcNoContext, "F5" ) +
         *new TSubMenu( "~W~indows", kbAltW ) +
-            *new TMenuItem( "~Z~oom", cmZoom, kbF5, hcNoContext, "F5" ) +
+            *new TMenuItem( "~Z~oom", cmZoom, kbF12, hcNoContext, "F12" ) +
             *new TMenuItem( "~R~esize/move",cmResize, kbCtrlF5, hcNoContext, "Ctrl-F5" ) +
             *new TMenuItem( "~N~ext", cmEditorNext, kbF6, hcNoContext, "F6" ) +
             *new TMenuItem( "~P~revious", cmEditorPrev, kbShiftF6, hcNoContext, "Shift-F6" ) +
@@ -151,15 +154,18 @@ TStatusLine *TurboApp::initStatusLine( TRect r )
             *new TStatusItem( "~Ctrl-O~ Open", kbNoKey, cmOpen ) +
             *new TStatusItem( "~Ctrl-S~ Save", kbNoKey, cmSave ) +
             *new TStatusItem( "~F6~ Next", kbF6, cmEditorNext ) +
-            *new TStatusItem( "~F12~ Menu" , kbF12, cmMenu ) +
+            *new TStatusItem( "~Alt-F4~ Menu" , kbAltF4, cmMenu) +
             *new TStatusItem( 0, kbShiftF6, cmEditorPrev )
             );
 }
+
+#include "../vm/dovm.cc"
 
 void TurboApp::idle()
 {
     TApplication::idle();
     clock->update();
+    doVM(0);
 }
 
 void TurboApp::getEvent(TEvent &event)
